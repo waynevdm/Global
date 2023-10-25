@@ -1,5 +1,6 @@
 # Global
 
+## Identity Server 4
 
 Clone the repo https://github.com/IdentityServer/IdentityServer4
 
@@ -12,6 +13,8 @@ Build the solution Identity Server 4
 Then run the Host project to get the identity provider running
 
 Once running a page with Welcome to IdentityServer4 will start
+
+## Docker
 
 Install Docker Desktop for windows
 
