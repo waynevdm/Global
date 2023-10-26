@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace ShoppingCartBusiness.Models
+namespace ShoppingCartModels.Carts
 {
     public class Cart
     {
+        public int CartId { get; set; }
+        // This will be set by the identity context
+        public int UserId { get; set; }
         private List<CartItem> _items = new List<CartItem>();
 
         public void AddItem(CartItem item)

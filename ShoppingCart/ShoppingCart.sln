@@ -9,7 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartBusiness", "Sho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartInfrastructure", "ShoppingCartInfrastructure\ShoppingCartInfrastructure.csproj", "{CA42B1EB-A07A-47C1-A12A-E1C36E4DE57C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartTests", "ShoppingCartTests\ShoppingCartTests.csproj", "{5637EE56-BFB2-4100-B070-DA257A59AF14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCartTests", "ShoppingCartTests\ShoppingCartTests.csproj", "{5637EE56-BFB2-4100-B070-DA257A59AF14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{BFA6F850-60FD-4B19-96BD-9588F25CB353}"
+	ProjectSection(SolutionItems) = preProject
+		ShoppingCart.sql = ShoppingCart.sql
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartModels", "ShoppingCartModels\ShoppingCartModels.csproj", "{155838A5-DB85-4EDC-B8E5-A8F8D13A914E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +40,10 @@ Global
 		{5637EE56-BFB2-4100-B070-DA257A59AF14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5637EE56-BFB2-4100-B070-DA257A59AF14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5637EE56-BFB2-4100-B070-DA257A59AF14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{155838A5-DB85-4EDC-B8E5-A8F8D13A914E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{155838A5-DB85-4EDC-B8E5-A8F8D13A914E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{155838A5-DB85-4EDC-B8E5-A8F8D13A914E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{155838A5-DB85-4EDC-B8E5-A8F8D13A914E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

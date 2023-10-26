@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShoppingCartInfrastructure\ShoppingCartInfrastructure.csproj" />
+    <ProjectReference Include="..\ShoppingCartModels\ShoppingCartModels.csproj" />
   </ItemGroup>
 
 </Project>
