@@ -6,11 +6,13 @@ using System.Security.Claims;
 using ShoppingCartModels.Carts;
 using ShoppingCartBusiness.Services;
 using ShoppingCartApi.Helpers;
+using ShoppingCartApi.Controllers.Models;
 
 namespace ShoppingCartApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ShoppingCartController : ControllerBase
     {
 
@@ -23,7 +25,7 @@ namespace ShoppingCartApi.Controllers
             _cartService = cartService;
         }
 
-        [Authorize]
+        
         [HttpGet(Name = "GetShoppingCart")]
         public async Task<Cart> Get()
         {
@@ -37,6 +39,66 @@ namespace ShoppingCartApi.Controllers
                 _logger.LogError("ShoppingCartController.Get", ex);
                 Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 return null;
+            }
+        }
+
+        [HttpPost]
+        [Route("AddItem")]
+        public async Task<CartItem> AddItem([FromBody] CartAddItem addItem)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    BadRequest();
+                    return null;
+                }
+
+                return await _cartService.AddItem(IdentityHelper.GetUserId(User), addItem.ProductId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("ShoppingCartController.Get", ex);
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return null;
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateItem")]
+        public async Task UpdateItem([FromBody] CartUpdateItem updateItem)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    BadRequest();
+                }
+
+                await _cartService.UpdateItem(IdentityHelper.GetUserId(User), updateItem.ProductId, updateItem.Quantity);
+                Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("ShoppingCartController.Get", ex);
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            }
+        }
+
+        [HttpDelete]
+        [Route("RemoveItem")]
+        public async Task RemoveItem(int productId)
+        {
+            try
+            {
+                // Get UserId
+                await _cartService.RemoveItem(IdentityHelper.GetUserId(User), productId);
+                Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("ShoppingCartController.Get", ex);
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
         }
     }

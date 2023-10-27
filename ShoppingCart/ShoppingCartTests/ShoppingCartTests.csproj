@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ShoppingCartApi\ShoppingCartApi.csproj" />
     <ProjectReference Include="..\ShoppingCartBusiness\ShoppingCartBusiness.csproj" />
   </ItemGroup>
 

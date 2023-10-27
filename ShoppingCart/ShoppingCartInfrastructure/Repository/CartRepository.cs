@@ -1,7 +1,9 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using ShoppingCartModels.Carts;
+using ShoppingCartModels.Products;
 using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace ShoppingCartInfrastructure.Repository
 {
@@ -36,14 +38,90 @@ namespace ShoppingCartInfrastructure.Repository
                 if (cart != null)
                 {
                     sql = @"SELECT * FROM CartItem WHERE CartId = @CartId";
-                    var cartItems = await connection.QueryAsync<CartItem>(sql, new { CartId = cart.CartId });
-                    foreach (var cartItem in cartItems)
-                    {
-                        cart.AddItem(cartItem);
-                    }
+                    cart.Items = (await connection.QueryAsync<CartItem>(sql, new { CartId = cart.CartId })).ToList();
                 }
             }
             return cart;
         }
+
+        public async Task<int> GetLastCartIdForUserId(int userId)
+        {
+            int cartId;
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var sql = @"SELECT MAX(CartId) FROM Cart WHERE UserId = @UserId";
+                cartId = await connection.QuerySingleOrDefaultAsync<int>(sql, new { UserId = userId });
+            }
+            return cartId;
+        }
+
+        public async Task<CartItem> AddItem(int userId, Product prod)
+        {
+            int intialQuantity = 1;
+            int cartId = await GetLastCartIdForUserId(userId);
+            var insertItem = new 
+            {
+                CartId = cartId,
+                ProductId = prod.Id,
+                ProductName = prod.Name,
+                ProductImagePath = prod.ImagePath,
+                Price = prod.Price,
+                Quantity = intialQuantity
+            };
+
+            var sql = @"INSERT INTO CartItem (CartId, ProductId, ProductName, ProductImagePath, Price, Quantity) 
+                                        VALUES (@CartId, @ProductId, @ProductName, @ProductImagePath, @Price, @Quantity);";
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.ExecuteAsync(sql, insertItem);
+            }
+
+            return new CartItem
+            {
+                ProductId = prod.Id,
+                ProductName = prod.Name,
+                ProductImagePath = prod.ImagePath,
+                Price = prod.Price,
+                Quantity = intialQuantity
+            };
+        }
+
+        public async Task UpdateItem(int userId, int productId, int quantity)
+        {
+            int cartId = await GetLastCartIdForUserId(userId);
+            var updateItem = new
+            {
+                CartId = cartId,
+                ProductId = productId,
+                Quantity = quantity
+            };
+
+            var sql = @"UPDATE CartItem 
+                            SET Quantity = @Quantity
+                            WHERE CartId = @CartId 
+                            AND ProductId = @ProductId;";
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.ExecuteAsync(sql, updateItem);
+            }
+        }
+        public async Task RemoveItem(int userId, int productId)
+        {
+            int cartId = await GetLastCartIdForUserId(userId);
+            var deleteItem = new
+            {
+                CartId = cartId,
+                ProductId = productId
+            };
+
+            var sql = @"DELETE FROM CartItem 
+                            WHERE CartId = @CartId 
+                            AND ProductId = @ProductId;";
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.ExecuteAsync(sql, deleteItem);
+            }
+        }
+
     }
 }

@@ -1,9 +1,6 @@
 ﻿using ShoppingCartModels.Carts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ShoppingCartModels.Products;
+
 
 namespace ShoppingCartInfrastructure.Repository
 {
@@ -11,5 +8,8 @@ namespace ShoppingCartInfrastructure.Repository
     {
         public Task<Cart> CreateCart(int userId);
         public Task<Cart> GetCart(int userId);
+        public Task<CartItem> AddItem(int userId, Product prod);
+        public Task UpdateItem(int userId, int productId, int quantity);
+        public Task RemoveItem(int userId, int productId);
     }
 }
